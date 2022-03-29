@@ -4,7 +4,7 @@ import pandas as pd                  # import pandas package under shorthand "pd
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import PolynomialFeatures    # function to generate polynomial and interaction features
 from sklearn.linear_model import LinearRegression, HuberRegressor
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, mean_absolute_error
 from sklearn.model_selection import KFold
 
 
@@ -27,7 +27,7 @@ def plot(points, best_lin_model, best_hub_model, timeRange, title):
 
     X_val = best_hub_model[0].fit_transform(t)
     y_pred = best_hub_model[1].predict(X_val)
-    ax.plot(t,y_pred, color="red")
+    ax.plot(t,y_pred, color="orange")
 
     plt.ylim([-300, 1300])
     plt.title(title)
@@ -67,10 +67,10 @@ def model(df,stop,line,days,title):
             val_lin_error = mean_squared_error(y_val, y_pred_lin_val)
 
             #### HuberRegressor
-            hub_regr = HuberRegressor(fit_intercept=False, epsilon=1.0)
+            hub_regr = HuberRegressor(fit_intercept=False)
             hub_regr.fit(X_train_poly, y_train)
             y_pred_hub_val = hub_regr.predict(X_val_poly)
-            val_hub_error = mean_squared_error(y_val, y_pred_hub_val)
+            val_hub_error = mean_absolute_error(y_val, y_pred_hub_val)
 
             models_lin[i].append((poly,lin_regr))
             models_hub[i].append((poly,hub_regr))
