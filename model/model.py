@@ -31,7 +31,7 @@ def plot(points, best_lin_model, best_hub_model, timeRange, title):
 
     plt.ylim([-300, 1300])
     plt.title(title)
-    plt.legend(["Data point","Linear regr","Huber regr"])
+    plt.legend(["Data point","Model w. squared loss","Model w. Huber loss"])
     plt.xlabel("Scheduled Arrival Time (s)")
     plt.ylabel("Arrival Delay (s)")
     plt.show()
@@ -54,7 +54,7 @@ def plot_final(points, best_lin_model, best_hub_model, timeRange, title):
 
     plt.ylim([-300, 1300])
     plt.title(title)
-    plt.legend(["Data point","Linear regr","Huber regr"])
+    plt.legend(["Data point","Model w. squared loss","Model w. Huber loss"])
     plt.xlabel("Scheduled Arrival Time (s)")
     plt.ylabel("Arrival Delay (s)")
     plt.show()
@@ -122,8 +122,11 @@ def model(df,stop,line,days,testdays,title, testTitle):
             models_lin[i].append((poly,lin_regr))
             models_hub[i].append((poly,hub_regr))
 
+
     print("########################")
     print(title)
+    print("train+val size: " + str(X.size))
+    print("test size: " + str(X_test.size))
 
     #### lin_regr select best degree and model:
     average_lin_error = [sum(err) / len(err) for err in validation_lin_errors]
@@ -136,10 +139,11 @@ def model(df,stop,line,days,testdays,title, testTitle):
     print("lin_regr errors")
     print(average_lin_error)
     print(average_lin_error_train)
+    print(average_lin_error_test)
     print("best deg: " + str(degrees[best_lin_degree]))
-    print("Training error:" + str(train_lin_errors[best_lin_degree][best_lin_model_num]))
-    print("Validation error:" + str(validation_lin_errors[best_lin_degree][best_lin_model_num]))
-    print("Test error:" + str(test_lin_errors[best_lin_degree][best_lin_model_num]))
+    print("Training error:" + str(average_lin_error_train[best_lin_degree]))
+    print("Validation error:" + str(average_lin_error[best_lin_degree]))
+    print("Test error:" + str(average_lin_error_test[best_lin_degree]))
 
     #### hub_regr select best degree and model:
     average_hub_error = [sum(err) / len(err) for err in validation_hub_errors]
@@ -147,15 +151,16 @@ def model(df,stop,line,days,testdays,title, testTitle):
     average_hub_error_test = [sum(err) / len(err) for err in test_hub_errors]
     best_hub_degree = average_hub_error.index(min(average_hub_error))
     best_hub_model_num = validation_hub_errors[best_hub_degree].index(min(validation_hub_errors[best_hub_degree]))
-    best_hub_model = models_lin[best_hub_degree][best_hub_model_num]
+    best_hub_model = models_hub[best_hub_degree][best_hub_model_num]
     print()
     print("hub_regr errors")
     print(average_hub_error)
     print(average_hub_error_train)
+    print(average_hub_error_test)
     print("best deg: " + str(degrees[best_hub_degree]))
-    print("Training error:" + str(train_hub_errors[best_hub_degree][best_hub_model_num]))
-    print("Validation error:" + str(validation_lin_errors[best_hub_degree][best_hub_model_num]))
-    print("Test error:" + str(test_lin_errors[best_hub_degree][best_hub_model_num]))
+    print("Training error:" + str(average_hub_error_train[best_hub_degree]))
+    print("Validation error:" + str(average_hub_error[best_hub_degree]))
+    print("Test error:" + str(average_hub_error_test[best_hub_degree]))
 
     #### Create plot
     plot((X,y), best_lin_model, best_hub_model, range(20000,86400), title)

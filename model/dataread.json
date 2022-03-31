@@ -7,7 +7,7 @@
         "lines": ["55"],
         "daysets": [[1644789600,1644876000,1644962400,1645048800,1645135200],[1645394400,1645480800,1645567200,1645653600,1645740000]],
         "testsets": [[1647208800, 1647295200],[1646690400, 1647381600]],
-        "setNames": ["Arrival Delays (Good Weather Set1) 14-18.2.2022","Arrival Delays (Bad Weather Set2) 21-25.2.2022"],
-        "testNames": ["Test Days (Good Weather)","Test Days (Bad Weather)"]
+        "setNames": ["Arrival Delays (Normal Weather - Set1) 14-18.2.2022","Arrival Delays (Snowy Weather - Set2) 21-25.2.2022"],
+        "testNames": ["Test Days (Normal Weather)","Test Days (Snowy Weather)"]
     }
 }
